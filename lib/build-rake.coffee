@@ -16,7 +16,7 @@ exports.provideRakeBuilder = ->
         .filter(fs.existsSync)
 
       gemfiles = ['Gemfile', 'Gemfile.lock']
-      gemfilesFound = files.map (file) => path.join(@cwd, file)
+      gemfilesFound = gemfiles.map (file) => path.join(@cwd, file)
         .filter(fs.existsSync)
       @useBundler = (gemfilesFound.length > 0)
 
