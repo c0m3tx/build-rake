@@ -14,18 +14,18 @@ exports.provideRakeBuilder = ->
       files = ['Rakefile', 'rakefile', 'Rakefile.rb', 'rakefile.rb']
       found = files.map (file) => path.join(@cwd, file)
         .filter(fs.existsSync)
+      found.length > 0
 
+    useBundler: ->
       gemfiles = ['Gemfile', 'Gemfile.lock']
       gemfilesFound = gemfiles.map (file) => path.join(@cwd, file)
         .filter(fs.existsSync)
-      @useBundler = (gemfilesFound.length > 0)
-
-      found.length > 0
-
+      gemfilesFound.length > 0
+      
     settings: ->
       new Promise (resolve, reject) =>
         rake_exec = if /^win/.test(process.platform) then "rake.bat" else "rake"
-        rake_exec = "bundle exec #{rake_exec}" if @useBundler
+        rake_exec = "bundle exec #{rake_exec}" if this.useBundler()
         rake_t    = "#{rake_exec} -T"
         child_process.exec rake_t, {cwd: @cwd}, (error, stdout, stderr) ->
           reject(error) if error?
